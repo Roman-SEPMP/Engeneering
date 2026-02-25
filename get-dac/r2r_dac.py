@@ -17,7 +17,7 @@ class R2R_DAC:
         
     def set_voltage(self, voltage):
         if not (0.0 <= voltage <= self.dynamic_range):
-            print(f"Напряжение выходит за динамический диапазон ЦАП (0.00 - {dynamic_range: .2f} B)")
+            print(f"Напряжение выходит за динамический диапазон ЦАП (0.00 - {self.dynamic_range: .2f} B)")
             print("устанавливаем 0.0 B")
             return 0
         number = int(voltage / self.dynamic_range * 255)
