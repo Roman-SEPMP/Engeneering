@@ -1,7 +1,7 @@
 from matplotlib import pyplot as plt
 import RPi.GPIO as GPIO
 import time
-import r2r_adc as r2r
+import r2r_adc2 as r2r
 
 def plot_voltage_vs_time(rime, voltage, max_voltage):
     plt.figure(figsize = (10, 6))
