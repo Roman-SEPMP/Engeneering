@@ -4,7 +4,7 @@ def dec2bin(value):
     return [int(element) for element in bin(value)[2:].zfill(8)]
 
 class R2R_ADC:
-    def __init__(self, dynamic_range, compare_time = 0.01, verbose = False):
+    def __init__(self, dynamic_range, compare_time = 0.001, verbose = False):
         self.dynamic_range = dynamic_range
         self.verbose = verbose
         self.compare_time = compare_time
@@ -34,9 +34,12 @@ class R2R_ADC:
         return 255
 
     def get_sc_voltage(self):
-        volt = (self.sequential_counting_adc() / 255) * self.dynamic_range
-        GPIO.output(self.bits_gpio, self.sequential_counting_adc())
-        return volt
+        #volt = (self.sequential_counting_adc() / 255) * self.dynamic_range
+        #GPIO.output(self.bits_gpio, self.sequential_counting_adc())
+        #return volt
+        val = self.sequential_counting_adc()
+        GPIO.output(self.bits_gpio, val)
+        return (val/256) * self.dynamic_range
 
 if __name__ == "__main__":
     dac = None

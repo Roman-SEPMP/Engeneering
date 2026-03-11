@@ -3,7 +3,7 @@ import time
 def dec2bin(value):
     return [int(element) for element in bin(value)[2:].zfill(8)]
 class R2R_ADC:
-    def __init__(self, dynamic_range, compare_time = 0.01, verbose = False):
+    def __init__(self, dynamic_range, compare_time = 0.1, verbose = False):
         self.dynamic_range = dynamic_range
         self.verbose = verbose
         self.compare_time = compare_time
@@ -24,25 +24,31 @@ class R2R_ADC:
         max=255
         for val in range(max+1):
             self.number_to_dac(val)
-            time.sleep (0.01)
+            time.sleep (0.1)
             comp=GPIO.input(self.comp_gpio)
             if comp==1:
                return val
         return max
     def get_sc_voltage(self):
-        volt=(self.sequential_counting_adc()/256)*self.dynamic_range
-        GPIO.output(self.bits_gpio,self.sequential_counting_adc())
-        return volt
+        #volt=(self.sequential_counting_adc()/256)*self.dynamic_range
+        #GPIO.output(self.bits_gpio,self.sequential_counting_adc())
+        #return volt
+
+        val = self.sequential_counting_adc()
+        GPIO.output(self.bits_gpio, val)
+        return (val/256) * self.dynamic_range
+
     def successive_approximation_adc(self):
         v=0
         for i in range(7,-1,-1):
             v|=(1<<i)
             self.number_to_dac(v)
             comp=GPIO.input(self.comp_gpio)
-            time.sleep (0.01)
+            time.sleep (0.1)
             if comp==1:
                v&=~(1<<i)
         return(v)
+
     def get_sar_voltage(self):
         volt=(self.successive_approximation_adc()/256)*self.dynamic_range
         GPIO.output(self.bits_gpio,self.successive_approximation_adc())
