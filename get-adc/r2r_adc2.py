@@ -24,7 +24,7 @@ class R2R_ADC:
         max=255
         for val in range(max+1):
             self.number_to_dac(val)
-            time.sleep (0.1)
+            time.sleep (0.01)
             comp=GPIO.input(self.comp_gpio)
             if comp==1:
                return val
@@ -44,7 +44,7 @@ class R2R_ADC:
             v|=(1<<i)
             self.number_to_dac(v)
             comp=GPIO.input(self.comp_gpio)
-            time.sleep (0.1)
+            time.sleep (0.01)
             if comp==1:
                v&=~(1<<i)
         return(v)
